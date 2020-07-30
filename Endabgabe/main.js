@@ -65,13 +65,13 @@ var Galaxy;
             let target = _event.target;
             let value = target.value;
             switch (value) {
-                case "planet":
-                    console.log("planet");
-                    Galaxy.canvas.addEventListener("click", drawTiefighter);
-                    break;
                 case "ship":
                     console.log("ship");
                     Galaxy.canvas.addEventListener("click", drawTiefighter);
+                    break;
+                case "planet":
+                    console.log("planet");
+                    Galaxy.canvas.addEventListener("click", drawPlanet);
                     break;
                 case "meteroite":
                     console.log("meteroite");

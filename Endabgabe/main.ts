@@ -100,15 +100,18 @@ namespace Galaxy {
             let value: string = target.value;
 
             switch (value) {
-                case "planet":
-                    console.log("planet");
-                    canvas.addEventListener("click", drawTiefighter);
-                    break;
 
                 case "ship":
                     console.log("ship");
                     canvas.addEventListener("click", drawTiefighter);
                     break;
+
+                    
+                case "planet":
+                    console.log("planet");
+                    canvas.addEventListener("click", drawPlanet);
+                    break;
+
 
 
                 case "meteroite":
