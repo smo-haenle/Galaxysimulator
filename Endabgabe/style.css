@@ -1,0 +1,27 @@
+body {
+background-image: url(bg.jpg);
+color: white;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    position: absolute;
+    margin-top: 38%;
+    font-size: 5em;
+   
+}
+#canvas {
+    background-image: url(stars.jpg);
+    background-size: cover;
+    position: absolute;
+    border: 1px solid white;
+}
+
+div {
+    position: relative;
+    margin-left: 80%;
+}
+
+#selfDestroy{
+margin-top: 5%;
+}
