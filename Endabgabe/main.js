@@ -8,6 +8,8 @@ var Galaxy;
     let galaxySize;
     let galaxyType;
     let objectStyle;
+    let dragDrop = false;
+    let objectDragDrop;
     async function handleLoad(_event) {
         Galaxy.canvas = document.querySelector("canvas");
         if (!Galaxy.canvas)
@@ -23,6 +25,7 @@ var Galaxy;
         galaxyType.addEventListener("change", chooseGalaxy);
         objectStyle = document.querySelector("#chooseObject");
         objectStyle.addEventListener("change", chooseObjects);
+        Galaxy.canvas.addEventListener("mousedown", pickSymbol);
         function chooseGalaxySize(_event) {
             let target = _event.target;
             let id = target.id;
@@ -148,6 +151,23 @@ var Galaxy;
         }
         function selfDestroy() {
             Galaxy.arrayObjects = [];
+        }
+        function pickSymbol(_event) {
+            // console.log("Mousedown");
+            dragDrop = true;
+            let offsetX = _event.clientX;
+            let offsetY = _event.clientY;
+            for (let object of Galaxy.arrayObjects) {
+                if (object.position.x - 25 < offsetX &&
+                    object.position.x + 25 > offsetX &&
+                    object.position.y - 25 < offsetY &&
+                    object.position.y + 25 > offsetY) {
+                    let index = Galaxy.arrayObjects.indexOf(object);
+                    Galaxy.arrayObjects.splice(index, 1);
+                    objectDragDrop = object;
+                }
+                // console.log(arrayobject);
+            }
         }
     }
 })(Galaxy || (Galaxy = {}));

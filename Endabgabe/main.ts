@@ -7,11 +7,13 @@ namespace Galaxy {
     export let canvas: HTMLCanvasElement;
     export let arrayObjects: Move[] = [];
     export let arrayShips: Ships[] = [];
-
+    
     let updateIntervalId: number;
     let galaxySize: HTMLDivElement;
     let galaxyType: HTMLSelectElement;
     let objectStyle: HTMLSelectElement;
+    let dragDrop: boolean = false;
+    let objectDragDrop: Move;
 
     async function handleLoad(_event: Event): Promise<void> {
         canvas = <HTMLCanvasElement>document.querySelector("canvas");
@@ -38,7 +40,7 @@ namespace Galaxy {
         objectStyle = <HTMLSelectElement>document.querySelector("#chooseObject");
         objectStyle.addEventListener("change", chooseObjects);
 
-
+        canvas.addEventListener("mousedown", pickSymbol);
 
 
 
@@ -217,6 +219,28 @@ namespace Galaxy {
             arrayObjects = [];
 
         }
+
+        function pickSymbol(_event: MouseEvent): void {
+            // console.log("Mousedown");
+    
+            dragDrop = true;
+    
+            let offsetX: number = _event.clientX;
+            let offsetY: number = _event.clientY;
+    
+            for (let object of arrayObjects) {
+    
+                if (object.position.x - 25 < offsetX &&
+                    object.position.x + 25 > offsetX &&
+                    object.position.y - 25 < offsetY &&
+                    object.position.y + 25 > offsetY) {
+                    let index: number = arrayObjects.indexOf(object);
+                    arrayObjects.splice(index, 1);
+                    objectDragDrop = object;
+                }
+                // console.log(arrayobject);
+    
+            }
     }
 
-}
+}}
