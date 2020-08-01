@@ -3,6 +3,8 @@ var Galaxy;
 (function (Galaxy) {
     window.addEventListener("load", handleLoad);
     Galaxy.arrayObjects = [];
+    Galaxy.arrayShips = [];
+    let updateIntervalId;
     let galaxySize;
     let galaxyType;
     let objectStyle;
@@ -11,6 +13,10 @@ var Galaxy;
         if (!Galaxy.canvas)
             return;
         Galaxy.crc2 = Galaxy.canvas.getContext("2d");
+        let background = Galaxy.crc2.getImageData(0, 0, Galaxy.canvas.width, Galaxy.canvas.height);
+        updateIntervalId = window.setInterval(update, 50, background);
+        let deleteAll = document.querySelector("#selfDestroy");
+        deleteAll.addEventListener("click", selfDestroy);
         galaxySize = document.querySelector("div#chooseSize");
         galaxySize.addEventListener("change", chooseGalaxySize);
         galaxyType = document.querySelector("#chooseGalaxy");
@@ -63,21 +69,35 @@ var Galaxy;
         }
         function chooseObjects(_event) {
             let target = _event.target;
-            let value = target.value;
+            var value = target.value;
             switch (value) {
                 case "ship":
                     console.log("ship");
                     Galaxy.canvas.addEventListener("click", drawTiefighter);
+                    Galaxy.canvas.removeEventListener("click", drawStar);
+                    Galaxy.canvas.removeEventListener("click", drawPlanet);
+                    Galaxy.canvas.removeEventListener("click", drawAsteroid);
                     break;
                 case "planet":
                     console.log("planet");
                     Galaxy.canvas.addEventListener("click", drawPlanet);
+                    Galaxy.canvas.removeEventListener("click", drawStar);
+                    Galaxy.canvas.removeEventListener("click", drawTiefighter);
+                    Galaxy.canvas.removeEventListener("click", drawAsteroid);
                     break;
-                case "meteroite":
-                    console.log("meteroite");
+                case "asteroid":
+                    console.log("asteroid");
+                    Galaxy.canvas.addEventListener("click", drawAsteroid);
+                    Galaxy.canvas.removeEventListener("click", drawStar);
+                    Galaxy.canvas.removeEventListener("click", drawPlanet);
+                    Galaxy.canvas.removeEventListener("click", drawTiefighter);
                     break;
                 case "star":
                     console.log("star");
+                    Galaxy.canvas.addEventListener("click", drawStar);
+                    Galaxy.canvas.removeEventListener("click", drawTiefighter);
+                    Galaxy.canvas.removeEventListener("click", drawPlanet);
+                    Galaxy.canvas.removeEventListener("click", drawAsteroid);
                     break;
             }
         }
@@ -92,7 +112,6 @@ var Galaxy;
             console.log(Galaxy.arrayObjects);
         }
         function drawTiefighter(_event) {
-            console.log("tiefighter");
             let x = _event.clientX;
             let y = _event.clientY;
             console.log(x, y);
@@ -100,6 +119,35 @@ var Galaxy;
             ship.draw();
             Galaxy.arrayObjects.push(ship);
             console.log(Galaxy.arrayObjects);
+        }
+        function drawStar(_event) {
+            let x = _event.clientX;
+            let y = _event.clientY;
+            console.log(x, y);
+            let star = new Galaxy.Stars(x, y, 4);
+            star.draw();
+            Galaxy.arrayObjects.push(star);
+            console.log(Galaxy.arrayObjects);
+        }
+        function drawAsteroid(_event) {
+            let x = _event.clientX;
+            let y = _event.clientY;
+            console.log(x, y);
+            let asteroid = new Galaxy.Asteroid(x, y);
+            asteroid.draw();
+            Galaxy.arrayObjects.push(asteroid);
+            console.log(Galaxy.arrayObjects);
+        }
+        function update(_background) {
+            Galaxy.crc2.putImageData(_background, 0, 0);
+            for (let object of Galaxy.arrayObjects) {
+                object.draw();
+                object.move(1 / 50);
+                object.rotate();
+            }
+        }
+        function selfDestroy() {
+            Galaxy.arrayObjects = [];
         }
     }
 })(Galaxy || (Galaxy = {}));

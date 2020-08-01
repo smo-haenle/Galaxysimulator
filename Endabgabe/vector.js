@@ -19,8 +19,11 @@ var Galaxy;
         }
         // Geschwindigkeit zufällig berechnen & Richtung festlegen
         random(_minLength, _maxLength) {
-            let length = _minLength = Math.random() * (_maxLength - _minLength);
+            let length = _minLength + Math.random() * (_maxLength - _minLength);
             this.scale(length);
+        }
+        copy() {
+            return new Vector(this.x, this.y);
         }
     }
     Galaxy.Vector = Vector;

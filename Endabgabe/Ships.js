@@ -5,9 +5,9 @@ var Galaxy;
         // velocity: Vector;
         constructor(_x, _y) {
             this.position = new Galaxy.Vector(_x, _y);
+            this.velocity = new Galaxy.Vector((Math.random() * -2), (Math.random() * -1)); // -0.5 - 0.5 || 2 - 3
         }
         draw() {
-            console.log("Tiefighter");
             Galaxy.crc2.save();
             let radiusShip = 10;
             let ship = new Path2D();
@@ -24,18 +24,37 @@ var Galaxy;
             ship.arc(this.position.x, this.position.y, radiusShip, 0, 2 * Math.PI);
             Galaxy.crc2.fill(ship);
             Galaxy.crc2.moveTo(this.position.x, this.position.y);
-            Galaxy.crc2.lineTo(this.position.x + 30, this.position.y);
-            Galaxy.crc2.moveTo(this.position.x + 30, this.position.y + 20);
-            Galaxy.crc2.lineTo(this.position.x + 30, this.position.y - 20);
+            Galaxy.crc2.lineTo(this.position.x + 20, this.position.y);
+            Galaxy.crc2.moveTo(this.position.x + 20, this.position.y + 20);
+            Galaxy.crc2.lineTo(this.position.x + 20, this.position.y - 20);
             Galaxy.crc2.moveTo(this.position.x, this.position.y);
-            Galaxy.crc2.lineTo(this.position.x - 30, this.position.y);
-            Galaxy.crc2.moveTo(this.position.x - 30, this.position.y - 20);
-            Galaxy.crc2.lineTo(this.position.x - 30, this.position.y + 20);
+            Galaxy.crc2.lineTo(this.position.x - 20, this.position.y);
+            Galaxy.crc2.moveTo(this.position.x - 20, this.position.y - 20);
+            Galaxy.crc2.lineTo(this.position.x - 20, this.position.y + 20);
             Galaxy.crc2.strokeStyle = "grey";
-            Galaxy.crc2.lineWidth = 5;
+            Galaxy.crc2.lineWidth = 3;
             Galaxy.crc2.stroke();
             Galaxy.crc2.restore();
             Galaxy.crc2.closePath();
+        }
+        move() {
+            let temporaryVelocity = this.velocity;
+            this.position.add(temporaryVelocity);
+            if (this.position.x < 0) {
+                this.position.x += Galaxy.crc2.canvas.width;
+            }
+            if (this.position.y < 0) {
+                this.position.y += Galaxy.crc2.canvas.height;
+            }
+            if (this.position.x > Galaxy.crc2.canvas.width) {
+                this.position.x -= Galaxy.crc2.canvas.width;
+            }
+            if (this.position.y > Galaxy.crc2.canvas.height) {
+                this.position.y -= Galaxy.crc2.canvas.height;
+            }
+        }
+        rotate() {
+            //hi
         }
     }
     Galaxy.Ships = Ships;

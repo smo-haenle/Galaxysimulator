@@ -5,8 +5,10 @@ namespace Galaxy {
 
     export let crc2: CanvasRenderingContext2D;
     export let canvas: HTMLCanvasElement;
-    export let arrayObjects: Planets[] = [];
+    export let arrayObjects: Move[] = [];
+    export let arrayShips: Ships[] = [];
 
+    let updateIntervalId: number;
     let galaxySize: HTMLDivElement;
     let galaxyType: HTMLSelectElement;
     let objectStyle: HTMLSelectElement;
@@ -20,6 +22,13 @@ namespace Galaxy {
         crc2 = <CanvasRenderingContext2D>canvas.getContext("2d");
 
 
+        let background: ImageData = crc2.getImageData(0, 0, canvas.width, canvas.height);
+        updateIntervalId = window.setInterval(update, 50, background);
+        
+
+        let deleteAll: HTMLElement = <HTMLElement>document.querySelector("#selfDestroy");
+        deleteAll.addEventListener("click", selfDestroy);
+
         galaxySize = <HTMLDivElement>document.querySelector("div#chooseSize");
         galaxySize.addEventListener("change", chooseGalaxySize);
 
@@ -28,6 +37,8 @@ namespace Galaxy {
 
         objectStyle = <HTMLSelectElement>document.querySelector("#chooseObject");
         objectStyle.addEventListener("change", chooseObjects);
+
+
 
 
 
@@ -97,37 +108,53 @@ namespace Galaxy {
         function chooseObjects(_event: Event): void {
 
             let target: HTMLSelectElement = <HTMLSelectElement>_event.target;
-            let value: string = target.value;
+            var value: string = target.value;
 
             switch (value) {
 
                 case "ship":
                     console.log("ship");
                     canvas.addEventListener("click", drawTiefighter);
+                    canvas.removeEventListener("click", drawStar);
+                    canvas.removeEventListener("click", drawPlanet);
+                    canvas.removeEventListener("click", drawAsteroid);
+
                     break;
 
-                    
+
                 case "planet":
                     console.log("planet");
                     canvas.addEventListener("click", drawPlanet);
+                    canvas.removeEventListener("click", drawStar);
+                    canvas.removeEventListener("click", drawTiefighter);
+                    canvas.removeEventListener("click", drawAsteroid);
+
                     break;
 
-
-
-                case "meteroite":
-                    console.log("meteroite");
+                case "asteroid":
+                    console.log("asteroid");
+                    canvas.addEventListener("click", drawAsteroid);
+                    canvas.removeEventListener("click", drawStar);
+                    canvas.removeEventListener("click", drawPlanet);
+                    canvas.removeEventListener("click", drawTiefighter);
                     break;
 
                 case "star":
                     console.log("star");
+                    canvas.addEventListener("click", drawStar);
+                    canvas.removeEventListener("click", drawTiefighter);
+                    canvas.removeEventListener("click", drawPlanet);
+                    canvas.removeEventListener("click", drawAsteroid);
+
                     break;
 
             }
 
 
+
         }
-       
-       
+
+
         function drawPlanet(_event: MouseEvent): void {
             console.log("drawplanet");
             let x: number = _event.clientX;
@@ -141,7 +168,6 @@ namespace Galaxy {
         }
 
         function drawTiefighter(_event: MouseEvent): void {
-            console.log("tiefighter");
             let x: number = _event.clientX;
             let y: number = _event.clientY;
             console.log(x, y);
@@ -151,5 +177,46 @@ namespace Galaxy {
             console.log(arrayObjects);
 
         }
+        function drawStar(_event: MouseEvent): void {
+            let x: number = _event.clientX;
+            let y: number = _event.clientY;
+            console.log(x, y);
+            let star: Stars = new Stars(x, y, 4);
+            star.draw();
+            arrayObjects.push(star);
+            console.log(arrayObjects);
+
+        }
+
+        function drawAsteroid(_event: MouseEvent): void {
+            let x: number = _event.clientX;
+            let y: number = _event.clientY;
+            console.log(x, y);
+            let asteroid: Asteroid = new Asteroid(x, y);
+            asteroid.draw();
+            arrayObjects.push(asteroid);
+            console.log(arrayObjects);
+
+        }
+
+        function update(_background: ImageData): void {
+            crc2.putImageData(_background, 0, 0);
+
+            for (let object of arrayObjects) {
+                object.draw();
+                object.move(1 / 50);
+                object.rotate();
+            }
+
+
+
+        }
+
+
+        function selfDestroy(): void {
+            arrayObjects = [];
+
+        }
     }
+
 }

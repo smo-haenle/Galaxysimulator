@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <script src="vector.js" type="text/javascript" charset="utf-8"></script>
+    <script src="Move.js" type="text/javascript" charset="utf-8"></script>
+    <script src="Stars.js" type="text/javascript" charset="utf-8"></script>
+    <script src="Asteroid.js" type="text/javascript" charset="utf-8"></script>
     <script src="Ships.js" type="text/javascript" charset="utf-8"></script>
     <script src="Planets.js" type="text/javascript" charset="utf-8"></script>
-    <script src="vector.js" type="text/javascript" charset="utf-8"></script>
     <script src="main.js" type="text/javascript" charset="utf-8"></script>
     <title>Universesimulator</title>
 </head>
@@ -50,26 +53,29 @@
     <div id="chooseObject">
             <h3>Choose your Objects</h3>
     
-            <select name="objekt" id="chooseObject">
-            <option value="planet">Planet</option>
+            <select name="objekt" id="chooseObject" >
+            <option value="" selected disabled hidden>Choose here</option>
+            <option value="planet" >Planet</option>
             <option value="ship">Tiefighter</option>
-            <option value="meteroite">Meteroite</option>
+            <option value="asteroid">Asteroid</option>
             <option value="star">Star</option>
             </select>   
         
 
     </div>
-<div>
-    <button id="selfDestroy"> Selfdestroy</button>
-</div>
+
     <div id="savedGalaxys">
         <h3>Saved Galaxys</h3>
     </div>
 <div>
     <span>
         <input type="text" name="Title" value="" placeholder="Title of your picture" id="titlePicture">
-        <button id="buttonSafe">Save</button>
+        <button id="saveButton">Save</button>
     </span>
+</div>
+
+<div>
+    <button id="selfDestroy"><b>DESTROY</b></button>
 </div>
   
 </body>

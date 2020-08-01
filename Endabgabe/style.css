@@ -23,5 +23,17 @@ div {
 }
 
 #selfDestroy{
-margin-top: 5%;
+margin-top: 60%;
+border-radius: 50%;
+height: 150px;
+width: 150px;
+background-color: red;
+color: whitesmoke;
+transition: 0.5s;
+font-size: 1.5em;
+
+}
+
+#selfDestroy:hover{
+    transform: scale(1.05);
 }

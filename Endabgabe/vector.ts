@@ -3,9 +3,13 @@ namespace Galaxy {
     export class Vector {
         x: number;
         y: number;
+        velocity: Vector;
+        position: Vector;
+        rotation: number;
 
         constructor(_x: number, _y: number) {
             this.set(_x, _y);
+            
         }
 
         set(_x: number, _y: number): void {
@@ -25,9 +29,11 @@ namespace Galaxy {
 
         // Geschwindigkeit zufällig berechnen & Richtung festlegen
         random(_minLength: number, _maxLength: number): void {
-            let length: number = _minLength = Math.random() * (_maxLength - _minLength);
+            let length: number = _minLength + Math.random() * (_maxLength - _minLength);
 
             this.scale(length);
         }
+        copy(): Vector {
+            return new Vector(this.x, this.y);
     }
-}
+}}
