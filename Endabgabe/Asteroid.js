@@ -2,7 +2,6 @@
 var Galaxy;
 (function (Galaxy) {
     class Asteroid {
-        // velocity: Vector;
         constructor(_x, _y) {
             this.position = new Galaxy.Vector(_x, _y);
             this.velocity = new Galaxy.Vector((Math.random() * +2), (Math.random() * +1)); // -0.5 - 0.5 || 2 - 3
@@ -47,9 +46,6 @@ var Galaxy;
             if (this.position.y > Galaxy.crc2.canvas.height) {
                 this.position.y -= Galaxy.crc2.canvas.height;
             }
-        }
-        rotate() {
-            //hi
         }
     }
     Galaxy.Asteroid = Asteroid;

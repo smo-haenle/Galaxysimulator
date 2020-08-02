@@ -5,14 +5,22 @@ var Galaxy;
         // velocity: Vector;
         constructor(_x, _y, _rotation) {
             this.position = new Galaxy.Vector(_x, _y);
-            this.rotation = _rotation;
+            this.radius = 10;
         }
         draw() {
             console.log("draw");
+            let radiusStar = 10;
+            this.radius = radiusStar;
+            this.radius += 4;
+            let star = new Path2D();
+            console.log(this.radius, radiusStar);
             Galaxy.crc2.save();
-            Galaxy.crc2.translate(this.x, this.y);
             Galaxy.crc2.beginPath();
-            Galaxy.crc2.translate(-10, -20);
+            Galaxy.crc2.translate(this.x, this.y);
+            Galaxy.crc2.translate(-radiusStar, -radiusStar * 2);
+            Galaxy.crc2.fillStyle = "HSL(60, 80% , 10%)";
+            star.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+            Galaxy.crc2.fill(star);
             Galaxy.crc2.lineTo(this.position.x, this.position.y + 10);
             Galaxy.crc2.moveTo(this.position.x, this.position.y);
             Galaxy.crc2.lineTo(this.position.x, this.position.y - 10);
@@ -41,11 +49,11 @@ var Galaxy;
             Galaxy.crc2.closePath();
             Galaxy.crc2.restore();
         }
-        move() {
-            //hi
-        }
-        rotate() {
-            //hi
+        pulse() {
+            let temporaryRadius = this.radius;
+            this.position.scale(temporaryRadius);
+            this.radius += 4;
+            Galaxy.crc2.restore();
         }
     }
     Galaxy.Stars = Stars;

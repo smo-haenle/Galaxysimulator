@@ -53,9 +53,6 @@ var Galaxy;
                 this.position.y -= Galaxy.crc2.canvas.height;
             }
         }
-        rotate() {
-            //hi
-        }
     }
     Galaxy.Ships = Ships;
 })(Galaxy || (Galaxy = {}));

@@ -6,7 +6,6 @@ namespace Galaxy {
         position: Vector;
         velocity: Vector;
         rotation: number;
-        // velocity: Vector;
 
 
         constructor(_x: number, _y: number) {
@@ -62,12 +61,5 @@ namespace Galaxy {
                 this.position.y -= crc2.canvas.height;
             }
         }
-             
-            
-    
-            rotate (): void {
-                //hi
-    
-            }
         }
     }

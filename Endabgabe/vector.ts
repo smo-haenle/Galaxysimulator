@@ -6,6 +6,7 @@ namespace Galaxy {
         velocity: Vector;
         position: Vector;
         rotation: number;
+        
 
         constructor(_x: number, _y: number) {
             this.set(_x, _y);
@@ -27,12 +28,6 @@ namespace Galaxy {
             this.y += _addend.y;
         }
 
-        // Geschwindigkeit zufällig berechnen & Richtung festlegen
-        random(_minLength: number, _maxLength: number): void {
-            let length: number = _minLength + Math.random() * (_maxLength - _minLength);
-
-            this.scale(length);
-        }
         copy(): Vector {
             return new Vector(this.x, this.y);
     }

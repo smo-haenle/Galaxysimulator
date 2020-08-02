@@ -69,10 +69,6 @@ namespace Galaxy {
                 this.position.y -= crc2.canvas.height;
             }
         }
-        rotate (): void {
-           //hi
-
-        }
         }
 
 
