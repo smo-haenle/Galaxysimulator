@@ -5,20 +5,25 @@ namespace Galaxy {
 
     export let crc2: CanvasRenderingContext2D;
     export let canvas: HTMLCanvasElement;
+    export let url: string = "http://localhost:5001";
 
     export let arrayShips: Ships[] = [];
     export let arrayPlanets: Planets[] = [];
-    export let arrayAsteroids: Asteroid[] = [];
-    export let arrayStars: Stars [] = [];
-    export let arraySum = [arrayAsteroids, arrayPlanets, arrayShips, arrayStars];
+    export let arrayAsteroids: Asteroids[] = [];
+    export let arrayStars: Stars[] = [];
 
     let updateIntervalId: number;
     let galaxySize: HTMLDivElement;
     let galaxyType: HTMLSelectElement;
     let objectStyle: HTMLSelectElement;
     let dragDrop: boolean = false;
-    let objectDragDrop: Move;
-    
+
+
+    let shipDragDrop: Ships;
+    let planetDragDrop: Planets;
+    let starDragDrop: Stars;
+    let asteroidDragDrop: Asteroids;
+
     async function handleLoad(_event: Event): Promise<void> {
         canvas = <HTMLCanvasElement>document.querySelector("canvas");
 
@@ -43,6 +48,13 @@ namespace Galaxy {
 
         objectStyle = <HTMLSelectElement>document.querySelector("#chooseObject");
         objectStyle.addEventListener("change", chooseObjects);
+
+        let submit: HTMLButtonElement = <HTMLButtonElement>document.getElementById("saveButton");
+        submit.addEventListener("click", sendPicture);
+
+        let load: HTMLButtonElement = <HTMLButtonElement>document.getElementById("loadButton");
+        load.addEventListener("click", loadPicture);
+
 
         canvas.addEventListener("mousedown", pickSymbol);
 
@@ -186,7 +198,7 @@ namespace Galaxy {
         let x: number = _event.clientX;
         let y: number = _event.clientY;
         console.log(x, y);
-        let star: Stars = new Stars(x, y, 4);
+        let star: Stars = new Stars(x, y);
         star.draw();
         arrayStars.push(star);
         console.log(arrayStars);
@@ -197,7 +209,7 @@ namespace Galaxy {
         let x: number = _event.clientX;
         let y: number = _event.clientY;
         console.log(x, y);
-        let asteroid: Asteroid = new Asteroid(x, y);
+        let asteroid: Asteroids = new Asteroids(x, y);
         asteroid.draw();
         arrayAsteroids.push(asteroid);
         console.log(arrayAsteroids);
@@ -234,26 +246,119 @@ namespace Galaxy {
         arrayStars = [];
     }
 
-    /*/function pickSymbol(_event: MouseEvent): void {
-        // console.log("Mousedown");
+    function pickSymbol(_event: MouseEvent): void {
 
         dragDrop = true;
 
         let offsetX: number = _event.clientX;
         let offsetY: number = _event.clientY;
+        console.log(offsetX, offsetY);
+        for (let ship of arrayShips) {
 
-        for (let object of arrayObjects) {
+            if (ship.position.x - 25 < offsetX &&
+                ship.position.x + 25 > offsetX &&
+                ship.position.y - 25 < offsetY &&
+                ship.position.y + 25 > offsetY) {
+                let index: number = arrayShips.indexOf(ship);
+                arrayShips.splice(index, 1);
+                shipDragDrop = ship;
 
-            if (object.position.x - 25 < offsetX &&
-                object.position.x + 25 > offsetX &&
-                object.position.y - 25 < offsetY &&
-                object.position.y + 25 > offsetY) {
-                let index: number = arrayObjects.indexOf(object);
-                arrayObjects.splice(index, 1);
-                objectDragDrop = object;
-            }/*/
-            // console.log(arrayobject);
-
+                console.log(shipDragDrop);
+            }
         }
-    
+        for (let planet of arrayPlanets) {
 
+            if (planet.position.x - 25 < offsetX &&
+                planet.position.x + 25 > offsetX &&
+                planet.position.y - 25 < offsetY &&
+                planet.position.y + 25 > offsetY) {
+                let index: number = arrayPlanets.indexOf(planet);
+                arrayPlanets.splice(index, 1);
+                planetDragDrop = planet;
+
+                console.log(planetDragDrop);
+            }
+        }
+        for (let star of arrayStars) {
+
+            if (star.position.x - 25 < offsetX &&
+                star.position.x + 25 > offsetX &&
+                star.position.y - 25 < offsetY &&
+                star.position.y + 25 > offsetY) {
+                let index: number = arrayStars.indexOf(star);
+                arrayStars.splice(index, 1);
+                starDragDrop = star;
+
+                console.log(starDragDrop);
+            }
+        }
+        for (let asteroids of arrayAsteroids) {
+
+            if (asteroids.position.x - 25 < offsetX &&
+                asteroids.position.x + 25 > offsetX &&
+                asteroids.position.y - 25 < offsetY &&
+                asteroids.position.y + 25 > offsetY) {
+                let index: number = arrayAsteroids.indexOf(asteroids);
+                arrayAsteroids.splice(index, 1);
+                asteroidDragDrop = asteroids;
+
+                console.log(asteroidDragDrop);
+            }
+        }
+
+    }
+
+
+    async function sendPicture(_event: Event): Promise<void> {
+        let name: string | null = prompt("Canvas Name");
+        // console.log(name);
+
+        if (name == null) {
+            return;
+        }
+
+        let picture: any = {
+            name: name,
+            // URLSearchParams erwartet eine key value pair mit jeweils strings somit muss dass particle array zu einem string konvertiert werden
+            ship: JSON.stringify(arrayShips)
+        };
+
+        let query: URLSearchParams = new URLSearchParams(<any>picture);
+        await fetch(url + "/save?" + query.toString());
+
+        alert("Saved");
+    }
+
+    async function loadPicture(): Promise<void> {
+        let name: string | null = prompt("Canvas Name");
+
+        if (name == null) {
+            return;
+        }
+
+        let searchParams: any = {
+            name: name
+        };
+
+        let query: URLSearchParams = new URLSearchParams(<any>searchParams);
+        let response: Response = await fetch(url + "/load?" + query.toString());
+
+        // das Response objekt gibt mit der json funktion den inhalt der antwort als json zurück
+        let responseJson: any = await response.json();
+
+        // let name = responseJson.name;
+
+        // rohe partikel in array form
+        let shipsRaw: any = JSON.parse(responseJson.picture);
+
+        // resetCanvas();
+
+        for (let ship of shipsRaw) {
+            // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
+            let newShip: Ships = new Ships(ship.position.x, ship.position.y);
+            arrayShips.push(newShip);
+        }
+    }
+
+
+}

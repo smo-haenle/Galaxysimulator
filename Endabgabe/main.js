@@ -2,17 +2,20 @@
 var Galaxy;
 (function (Galaxy) {
     window.addEventListener("load", handleLoad);
+    Galaxy.url = "http://localhost:5001";
     Galaxy.arrayShips = [];
     Galaxy.arrayPlanets = [];
     Galaxy.arrayAsteroids = [];
     Galaxy.arrayStars = [];
-    Galaxy.arraySum = [Galaxy.arrayAsteroids, Galaxy.arrayPlanets, Galaxy.arrayShips, Galaxy.arrayStars];
     let updateIntervalId;
     let galaxySize;
     let galaxyType;
     let objectStyle;
     let dragDrop = false;
-    let objectDragDrop;
+    let shipDragDrop;
+    let planetDragDrop;
+    let starDragDrop;
+    let asteroidDragDrop;
     async function handleLoad(_event) {
         Galaxy.canvas = document.querySelector("canvas");
         if (!Galaxy.canvas)
@@ -28,6 +31,10 @@ var Galaxy;
         galaxyType.addEventListener("change", chooseGalaxy);
         objectStyle = document.querySelector("#chooseObject");
         objectStyle.addEventListener("change", chooseObjects);
+        let submit = document.getElementById("saveButton");
+        submit.addEventListener("click", sendPicture);
+        let load = document.getElementById("loadButton");
+        load.addEventListener("click", loadPicture);
         Galaxy.canvas.addEventListener("mousedown", pickSymbol);
     }
     function chooseGalaxySize(_event) {
@@ -132,7 +139,7 @@ var Galaxy;
         let x = _event.clientX;
         let y = _event.clientY;
         console.log(x, y);
-        let star = new Galaxy.Stars(x, y, 4);
+        let star = new Galaxy.Stars(x, y);
         star.draw();
         Galaxy.arrayStars.push(star);
         console.log(Galaxy.arrayStars);
@@ -141,7 +148,7 @@ var Galaxy;
         let x = _event.clientX;
         let y = _event.clientY;
         console.log(x, y);
-        let asteroid = new Galaxy.Asteroid(x, y);
+        let asteroid = new Galaxy.Asteroids(x, y);
         asteroid.draw();
         Galaxy.arrayAsteroids.push(asteroid);
         console.log(Galaxy.arrayAsteroids);
@@ -171,24 +178,92 @@ var Galaxy;
         Galaxy.arrayShips = [];
         Galaxy.arrayStars = [];
     }
-    /*/function pickSymbol(_event: MouseEvent): void {
-        // console.log("Mousedown");
-
+    function pickSymbol(_event) {
         dragDrop = true;
-
-        let offsetX: number = _event.clientX;
-        let offsetY: number = _event.clientY;
-
-        for (let object of arrayObjects) {
-
-            if (object.position.x - 25 < offsetX &&
-                object.position.x + 25 > offsetX &&
-                object.position.y - 25 < offsetY &&
-                object.position.y + 25 > offsetY) {
-                let index: number = arrayObjects.indexOf(object);
-                arrayObjects.splice(index, 1);
-                objectDragDrop = object;
-            }/*/
-    // console.log(arrayobject);
+        let offsetX = _event.clientX;
+        let offsetY = _event.clientY;
+        console.log(offsetX, offsetY);
+        for (let ship of Galaxy.arrayShips) {
+            if (ship.position.x - 25 < offsetX &&
+                ship.position.x + 25 > offsetX &&
+                ship.position.y - 25 < offsetY &&
+                ship.position.y + 25 > offsetY) {
+                let index = Galaxy.arrayShips.indexOf(ship);
+                Galaxy.arrayShips.splice(index, 1);
+                shipDragDrop = ship;
+                console.log(shipDragDrop);
+            }
+        }
+        for (let planet of Galaxy.arrayPlanets) {
+            if (planet.position.x - 25 < offsetX &&
+                planet.position.x + 25 > offsetX &&
+                planet.position.y - 25 < offsetY &&
+                planet.position.y + 25 > offsetY) {
+                let index = Galaxy.arrayPlanets.indexOf(planet);
+                Galaxy.arrayPlanets.splice(index, 1);
+                planetDragDrop = planet;
+                console.log(planetDragDrop);
+            }
+        }
+        for (let star of Galaxy.arrayStars) {
+            if (star.position.x - 25 < offsetX &&
+                star.position.x + 25 > offsetX &&
+                star.position.y - 25 < offsetY &&
+                star.position.y + 25 > offsetY) {
+                let index = Galaxy.arrayStars.indexOf(star);
+                Galaxy.arrayStars.splice(index, 1);
+                starDragDrop = star;
+                console.log(starDragDrop);
+            }
+        }
+        for (let asteroids of Galaxy.arrayAsteroids) {
+            if (asteroids.position.x - 25 < offsetX &&
+                asteroids.position.x + 25 > offsetX &&
+                asteroids.position.y - 25 < offsetY &&
+                asteroids.position.y + 25 > offsetY) {
+                let index = Galaxy.arrayAsteroids.indexOf(asteroids);
+                Galaxy.arrayAsteroids.splice(index, 1);
+                asteroidDragDrop = asteroids;
+                console.log(asteroidDragDrop);
+            }
+        }
+    }
+    async function sendPicture(_event) {
+        let name = prompt("Canvas Name");
+        // console.log(name);
+        if (name == null) {
+            return;
+        }
+        let picture = {
+            name: name,
+            // URLSearchParams erwartet eine key value pair mit jeweils strings somit muss dass particle array zu einem string konvertiert werden
+            ship: JSON.stringify(Galaxy.arrayShips)
+        };
+        let query = new URLSearchParams(picture);
+        await fetch(Galaxy.url + "/save?" + query.toString());
+        alert("Saved");
+    }
+    async function loadPicture() {
+        let name = prompt("Canvas Name");
+        if (name == null) {
+            return;
+        }
+        let searchParams = {
+            name: name
+        };
+        let query = new URLSearchParams(searchParams);
+        let response = await fetch(Galaxy.url + "/load?" + query.toString());
+        // das Response objekt gibt mit der json funktion den inhalt der antwort als json zurück
+        let responseJson = await response.json();
+        // let name = responseJson.name;
+        // rohe partikel in array form
+        let shipsRaw = JSON.parse(responseJson.ship);
+        // resetCanvas();
+        for (let ship of shipsRaw) {
+            // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
+            let newShip = new Galaxy.Ships(ship.position.x, ship.position.y);
+            Galaxy.arrayShips.push(newShip);
+        }
+    }
 })(Galaxy || (Galaxy = {}));
 //# sourceMappingURL=main.js.map

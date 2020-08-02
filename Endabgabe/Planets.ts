@@ -14,7 +14,7 @@ namespace Galaxy {
         constructor(_x: number, _y: number) {
             this.position = new Vector(_x, _y);
             this.radiusplanet = ((Math.random() + 1) * 20);
-
+           
 
         }
 

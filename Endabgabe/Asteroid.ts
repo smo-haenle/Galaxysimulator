@@ -1,6 +1,6 @@
 namespace Galaxy {
 
-    export class Asteroid {
+    export class Asteroids {
         x: number;
         y: number;
         position: Vector;

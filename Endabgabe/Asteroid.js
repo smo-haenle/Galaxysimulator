@@ -1,7 +1,7 @@
 "use strict";
 var Galaxy;
 (function (Galaxy) {
-    class Asteroid {
+    class Asteroids {
         constructor(_x, _y) {
             this.position = new Galaxy.Vector(_x, _y);
             this.velocity = new Galaxy.Vector((Math.random() * +2), (Math.random() * +1)); // -0.5 - 0.5 || 2 - 3
@@ -48,6 +48,6 @@ var Galaxy;
             }
         }
     }
-    Galaxy.Asteroid = Asteroid;
+    Galaxy.Asteroids = Asteroids;
 })(Galaxy || (Galaxy = {}));
 //# sourceMappingURL=Asteroid.js.map
