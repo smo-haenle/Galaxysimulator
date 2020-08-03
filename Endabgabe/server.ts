@@ -12,7 +12,7 @@ export namespace Galaxy {
     if (port == undefined)
         port = 5001;
 
-    let databaseUrl: string = "mongodb+srv://SimonHaenle:eia2@galaxysimulator.7bcsq.mongodb.net/test";
+    let databaseUrl: string = "mongodb+srv://SimonHaenle:eia2@galaxy.7bcsq.mongodb.net/test";
 
     startServer(port);
     connectToDatabase(databaseUrl);
