@@ -57,5 +57,8 @@
   },
   "version": "2.0.0",
   "main": "index.js",
-  "dependencies": {}
+  "dependencies": {
+    "@types/mongodb": "^3.5.25",
+    "mongodb": "^3.6.0"
+  }
 }

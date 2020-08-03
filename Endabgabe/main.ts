@@ -248,6 +248,7 @@ namespace Galaxy {
     function pickSymbol(_event: MouseEvent): void {
 
         dragDrop = true;
+        console.log("pick");
 
         let offsetX: number = _event.clientX;
         let offsetY: number = _event.clientY;
