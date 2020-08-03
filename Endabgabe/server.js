@@ -24,7 +24,7 @@ var Galaxy;
         let options = { useNewUrlParser: true, useUnifiedTopology: true };
         let mongoClient = new Mongo.MongoClient(_url, options);
         await mongoClient.connect();
-        collection = mongoClient.db("GalaxySimulator").collection("Pictures");
+        collection = mongoClient.db("Galaxysimulator").collection("Pictures");
         console.log("Database connection ", collection != undefined);
     }
     async function handleRequest(_request, _response) {

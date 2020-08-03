@@ -230,7 +230,6 @@ namespace Galaxy {
         }
         for (let star of arrayStars) {
             star.draw();
-            star.pulse();
         }
         for (let asteroid of arrayAsteroids) {
             asteroid.draw();
@@ -316,11 +315,15 @@ namespace Galaxy {
         if (name == null) {
             return;
         }
+   
 
         let picture: any = {
             name: name,
             // URLSearchParams erwartet eine key value pair mit jeweils strings somit muss dass particle array zu einem string konvertiert werden
-            ship: JSON.stringify(arrayShips)
+            ship: JSON.stringify(arrayShips),
+            star: JSON.stringify(arrayStars),
+            asteroid: JSON.stringify(arrayAsteroids),
+            planet: JSON.stringify(arrayPlanets)
         };
 
         let query: URLSearchParams = new URLSearchParams(<any>picture);
@@ -330,6 +333,7 @@ namespace Galaxy {
     }
 
     async function loadPicture(): Promise<void> {
+        selfDestroy();
         let name: string | null = prompt("Canvas Name");
 
         if (name == null) {
@@ -340,6 +344,8 @@ namespace Galaxy {
             name: name
         };
 
+   
+
         let query: URLSearchParams = new URLSearchParams(<any>searchParams);
         let response: Response = await fetch(url + "/load?" + query.toString());
 
@@ -349,14 +355,31 @@ namespace Galaxy {
         // let name = responseJson.name;
 
         // rohe partikel in array form
-        let shipsRaw: any = JSON.parse(responseJson.picture);
-
+        let shipsRaw: any = JSON.parse(responseJson.ship);
+        let starsRaw: any = JSON.parse(responseJson.star);
+        let asteroidsRaw: any = JSON.parse(responseJson.asteroid);
+        let planetsRaw: any = JSON.parse(responseJson.planet);
         // resetCanvas();
 
         for (let ship of shipsRaw) {
             // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
             let newShip: Ships = new Ships(ship.position.x, ship.position.y);
             arrayShips.push(newShip);
+        }
+        for (let star of starsRaw) {
+            // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
+            let newStar: Stars = new Ships(star.position.x, star.position.y);
+            arrayStars.push(newStar);
+        }
+        for (let asteroid of asteroidsRaw) {
+            // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
+            let newAsteroid: Asteroids = new Asteroids(asteroid.position.x, asteroid.position.y);
+            arrayAsteroids.push(newAsteroid);
+        }
+        for (let planet of planetsRaw) {
+            // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
+            let newPlanet: Planets = new Planets(planet.position.x, planet.position.y);
+            arrayPlanets.push(newPlanet);
         }
     }
 

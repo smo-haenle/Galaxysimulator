@@ -26,11 +26,11 @@ export namespace Galaxy {
     }
 
     async function connectToDatabase(_url: string): Promise<void> {
-        let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
+        let options: Mongo.MongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true };
         let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
         await mongoClient.connect();
 
-        collection = mongoClient.db("GalaxySimulator").collection("Pictures");
+        collection = mongoClient.db("Galaxysimulator").collection("Pictures");
         console.log("Database connection ", collection != undefined);
     }
 
@@ -62,8 +62,7 @@ export namespace Galaxy {
 
     function storePicture(canvasData: any): void {
         // Update funktion erstellt einen neuen eintrag falls keiner mit den 'name' existiert. sonst updated sie den vorhandenen eintrag
-        collection.update({name: canvasData.name}, canvasData, {upsert: true});
-
+        collection.update({ name: canvasData.name }, canvasData, { upsert: true });
         // alternativ nur insert
         // collection.insert(canvasData);
     }
