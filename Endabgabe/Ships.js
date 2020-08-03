@@ -2,22 +2,19 @@
 var Galaxy;
 (function (Galaxy) {
     class Ships {
-        // velocity: Vector;
         constructor(_x, _y) {
             this.position = new Galaxy.Vector(_x, _y);
             this.velocity = new Galaxy.Vector((Math.random() * -2), (Math.random() * -1)); // -0.5 - 0.5 || 2 - 3
         }
         draw() {
-            Galaxy.crc2.save();
             let radiusShip = 10;
             let ship = new Path2D();
+            Galaxy.crc2.save();
             Galaxy.crc2.beginPath();
-            Galaxy.crc2.restore();
             Galaxy.crc2.shadowColor = "black";
             Galaxy.crc2.shadowOffsetX = 5;
             Galaxy.crc2.shadowOffsetY = 5;
             Galaxy.crc2.shadowBlur = 5;
-            Galaxy.crc2.save();
             Galaxy.crc2.translate(this.x, this.y);
             Galaxy.crc2.translate(-radiusShip, -radiusShip * 2);
             Galaxy.crc2.fillStyle = "grey";

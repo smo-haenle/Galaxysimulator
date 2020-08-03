@@ -5,8 +5,7 @@ namespace Galaxy {
         y: number;
         velocity: Vector;
         position: Vector;
-        rotation: number;
-        // velocity: Vector;
+  
 
 
         constructor(_x: number, _y: number) {
@@ -18,16 +17,15 @@ namespace Galaxy {
         
         
         draw(): void {
-            crc2.save();
+
             let radiusShip: number = 10;
             let ship: Path2D = new Path2D();
+            crc2.save();
             crc2.beginPath();
-            crc2.restore();
             crc2.shadowColor = "black";
             crc2.shadowOffsetX = 5;
             crc2.shadowOffsetY = 5;
             crc2.shadowBlur = 5;
-            crc2.save();
             crc2.translate(this.x, this.y);
             crc2.translate(-radiusShip , -radiusShip * 2);
             crc2.fillStyle = "grey";

@@ -4,9 +4,8 @@ namespace Galaxy {
         x: number;
         y: number;
         position: Vector;
-        velocity: Vector;
-        rotation: number;
-        // velocity: Vector;
+
+
 
 
         constructor(_x: number, _y: number) {
@@ -48,7 +47,6 @@ namespace Galaxy {
             crc2.strokeStyle = "yellow";
             crc2.stroke();
             crc2.closePath();
-            crc2.scale(5, 5);
             crc2.restore();
 
             

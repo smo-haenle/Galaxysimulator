@@ -5,13 +5,13 @@ namespace Galaxy {
         y: number;
         position: Vector;
         velocity: Vector;
-        rotation: number;
 
 
         constructor(_x: number, _y: number) {
             this.position = new Vector(_x, _y);
             this.velocity = new Vector((Math.random() * +2), (Math.random() * +1)); // -0.5 - 0.5 || 2 - 3
         }
+
         draw(): void {
             crc2.beginPath();
             crc2.save();
@@ -33,8 +33,6 @@ namespace Galaxy {
             crc2.strokeStyle = "#383838";
             crc2.fillStyle = "#383838";
             crc2.fill();
-            crc2.stroke();
-            crc2.closePath();
             crc2.restore();
 
 

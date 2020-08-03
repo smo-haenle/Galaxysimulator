@@ -27,8 +27,6 @@ var Galaxy;
             Galaxy.crc2.strokeStyle = "#383838";
             Galaxy.crc2.fillStyle = "#383838";
             Galaxy.crc2.fill();
-            Galaxy.crc2.stroke();
-            Galaxy.crc2.closePath();
             Galaxy.crc2.restore();
         }
         move() {

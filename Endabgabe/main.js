@@ -2,7 +2,7 @@
 var Galaxy;
 (function (Galaxy) {
     window.addEventListener("load", handleLoad);
-    Galaxy.url = "http://localhost:5001";
+    Galaxy.url = "https://galaxysimulator.herokuapp.com/";
     Galaxy.arrayShips = [];
     Galaxy.arrayPlanets = [];
     Galaxy.arrayAsteroids = [];
@@ -16,7 +16,7 @@ var Galaxy;
     let planetDragDrop;
     let starDragDrop;
     let asteroidDragDrop;
-    async function handleLoad(_event) {
+    function handleLoad(_event) {
         Galaxy.canvas = document.querySelector("canvas");
         if (!Galaxy.canvas)
             return;
@@ -157,7 +157,6 @@ var Galaxy;
         Galaxy.crc2.putImageData(_background, 0, 0);
         for (let planet of Galaxy.arrayPlanets) {
             planet.draw();
-            planet.rotate();
         }
         for (let ship of Galaxy.arrayShips) {
             ship.draw();
@@ -179,14 +178,15 @@ var Galaxy;
     }
     function pickSymbol(_event) {
         dragDrop = true;
+        console.log("pick");
         let offsetX = _event.clientX;
         let offsetY = _event.clientY;
         console.log(offsetX, offsetY);
         for (let ship of Galaxy.arrayShips) {
             if (ship.position.x - 25 < offsetX &&
                 ship.position.x + 25 > offsetX &&
-                ship.position.y - 25 < offsetY &&
-                ship.position.y + 25 > offsetY) {
+                ship.position.y - 10 < offsetY &&
+                ship.position.y + 10 > offsetY) {
                 let index = Galaxy.arrayShips.indexOf(ship);
                 Galaxy.arrayShips.splice(index, 1);
                 shipDragDrop = ship;
@@ -205,10 +205,10 @@ var Galaxy;
             }
         }
         for (let star of Galaxy.arrayStars) {
-            if (star.position.x - 25 < offsetX &&
-                star.position.x + 25 > offsetX &&
-                star.position.y - 25 < offsetY &&
-                star.position.y + 25 > offsetY) {
+            if (star.position.x - 10 < offsetX &&
+                star.position.x + 10 > offsetX &&
+                star.position.y - 10 < offsetY &&
+                star.position.y + 10 > offsetY) {
                 let index = Galaxy.arrayStars.indexOf(star);
                 Galaxy.arrayStars.splice(index, 1);
                 starDragDrop = star;
@@ -227,15 +227,17 @@ var Galaxy;
             }
         }
     }
-    async function sendPicture(_event) {
+    async function sendPicture() {
         let name = prompt("Canvas Name");
         // console.log(name);
-        if (name == null) {
+        if (name == "") {
+            alert("please enter valid name");
             return;
         }
         let picture = {
             name: name,
-            // URLSearchParams erwartet eine key value pair mit jeweils strings somit muss dass particle array zu einem string konvertiert werden
+            // URLSearchParams erwartet eine key value pair mit jeweils strings
+            //--> arrays in strings umwandeln
             ship: JSON.stringify(Galaxy.arrayShips),
             star: JSON.stringify(Galaxy.arrayStars),
             asteroid: JSON.stringify(Galaxy.arrayAsteroids),
@@ -243,12 +245,14 @@ var Galaxy;
         };
         let query = new URLSearchParams(picture);
         await fetch(Galaxy.url + "/save?" + query.toString());
+        //json string wird zu einem query string umgewandelt
         alert("Saved");
     }
     async function loadPicture() {
         selfDestroy();
         let name = prompt("Canvas Name");
-        if (name == null) {
+        if (name == "") {
+            alert("please enter valid name");
             return;
         }
         let searchParams = {
@@ -259,12 +263,11 @@ var Galaxy;
         // das Response objekt gibt mit der json funktion den inhalt der antwort als json zurück
         let responseJson = await response.json();
         // let name = responseJson.name;
-        // rohe partikel in array form
+        // rohe objekte in array form
         let shipsRaw = JSON.parse(responseJson.ship);
         let starsRaw = JSON.parse(responseJson.star);
         let asteroidsRaw = JSON.parse(responseJson.asteroid);
         let planetsRaw = JSON.parse(responseJson.planet);
-        // resetCanvas();
         for (let ship of shipsRaw) {
             // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
             let newShip = new Galaxy.Ships(ship.position.x, ship.position.y);

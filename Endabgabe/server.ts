@@ -1,5 +1,4 @@
 import * as Http from "http";
-// import * as Url from "url";
 import * as Mongo from "mongodb";
 import * as Url from "url";
 
@@ -12,7 +11,7 @@ export namespace Galaxy {
     if (port == undefined)
         port = 5001;
 
-    let databaseUrl: string = "mongodb+srv://SimonHaenle:eia2@galaxy.7bcsq.mongodb.net/test";
+    let databaseUrl: string = "mongodb+srv://SimonHaenle:eia2@galaxy.t2khf.mongodb.net/test";
 
     startServer(port);
     connectToDatabase(databaseUrl);
@@ -30,7 +29,7 @@ export namespace Galaxy {
         let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
         await mongoClient.connect();
 
-        collection = mongoClient.db("Galaxysimulator").collection("Pictures");
+        collection = mongoClient.db("Galaxy").collection("Pictures");
         console.log("Database connection ", collection != undefined);
     }
 
@@ -39,13 +38,14 @@ export namespace Galaxy {
         _response.setHeader("Access-Control-Allow-Origin", "*");
 
         if (_request.url) {
-            // Unterscheidung von /save und /load mit startWith weil die url noch query parameter enthält
+            // /save --> store Picture wird ausgeführt da es sich um den save query handelt
             if (_request.url.startsWith("/save")) {
 
                 // save url query params
                 let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true);
                 storePicture(url.query);
 
+            // /load --> store Picture wird ausgeführt da es sich um den load query handelt
             } else if (_request.url.startsWith("/load")) {
 
                 // load picture from url name
@@ -55,29 +55,23 @@ export namespace Galaxy {
                 _response.write(JSON.stringify(picture));
 
             }
+
         }
 
         _response.end();
     }
-
+//canvasdata= url query
     function storePicture(canvasData: any): void {
-        // Update funktion erstellt einen neuen eintrag falls keiner mit den 'name' existiert. sonst updated sie den vorhandenen eintrag
+        //erstellt neuen eintrag bzw überschreibt den alten mit gleichem namen
         collection.update({ name: canvasData.name }, canvasData, { upsert: true });
-        // alternativ nur insert
-        // collection.insert(canvasData);
+      //collection (mogodb) wird aktualisiert
+
     }
 
     async function loadPicture(name: any): Promise<any> {
-        // findOne gibt der ersten und nur einen eintrag zurück
-        // falls mit insert, dann wird der älteste eintrag geladen mit dem gegebenem namen
         return await collection.findOne({
             name: name
-            // ändert die sortierung der abfrage von asc zu desc (von hintern)
-            // options: {
-            //     sort: [
-            //         ['name', 'desc'],
-            //     ],
-            // },
+            
         });
     }
 }

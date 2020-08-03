@@ -2,7 +2,6 @@
 var Galaxy;
 (function (Galaxy) {
     class Stars {
-        // velocity: Vector;
         constructor(_x, _y) {
             this.position = new Galaxy.Vector(_x, _y);
         }
@@ -38,7 +37,6 @@ var Galaxy;
             Galaxy.crc2.strokeStyle = "yellow";
             Galaxy.crc2.stroke();
             Galaxy.crc2.closePath();
-            Galaxy.crc2.scale(5, 5);
             Galaxy.crc2.restore();
         }
     }

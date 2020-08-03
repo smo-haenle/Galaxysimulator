@@ -5,7 +5,7 @@ namespace Galaxy {
 
     export let crc2: CanvasRenderingContext2D;
     export let canvas: HTMLCanvasElement;
-    export let url: string = "http://localhost:5001";
+    export let url: string = "https://galaxysimulator.herokuapp.com/";
 
     export let arrayShips: Ships[] = [];
     export let arrayPlanets: Planets[] = [];
@@ -24,7 +24,7 @@ namespace Galaxy {
     let starDragDrop: Stars;
     let asteroidDragDrop: Asteroids;
 
-    async function handleLoad(_event: Event): Promise<void> {
+    function handleLoad(_event: Event): void {
         canvas = <HTMLCanvasElement>document.querySelector("canvas");
 
         if (!canvas)
@@ -32,10 +32,8 @@ namespace Galaxy {
 
         crc2 = <CanvasRenderingContext2D>canvas.getContext("2d");
 
-
         let background: ImageData = crc2.getImageData(0, 0, canvas.width, canvas.height);
         updateIntervalId = window.setInterval(update, 50, background);
-
 
         let deleteAll: HTMLElement = <HTMLElement>document.querySelector("#selfDestroy");
         deleteAll.addEventListener("click", selfDestroy);
@@ -55,8 +53,8 @@ namespace Galaxy {
         let load: HTMLButtonElement = <HTMLButtonElement>document.getElementById("loadButton");
         load.addEventListener("click", loadPicture);
 
-
         canvas.addEventListener("mousedown", pickSymbol);
+
 
     }
 
@@ -222,7 +220,6 @@ namespace Galaxy {
 
         for (let planet of arrayPlanets) {
             planet.draw();
-            planet.rotate();
         }
         for (let ship of arrayShips) {
             ship.draw();
@@ -257,8 +254,8 @@ namespace Galaxy {
 
             if (ship.position.x - 25 < offsetX &&
                 ship.position.x + 25 > offsetX &&
-                ship.position.y - 25 < offsetY &&
-                ship.position.y + 25 > offsetY) {
+                ship.position.y - 10 < offsetY &&
+                ship.position.y + 10 > offsetY) {
                 let index: number = arrayShips.indexOf(ship);
                 arrayShips.splice(index, 1);
                 shipDragDrop = ship;
@@ -281,10 +278,10 @@ namespace Galaxy {
         }
         for (let star of arrayStars) {
 
-            if (star.position.x - 25 < offsetX &&
-                star.position.x + 25 > offsetX &&
-                star.position.y - 25 < offsetY &&
-                star.position.y + 25 > offsetY) {
+            if (star.position.x - 10 < offsetX &&
+                star.position.x + 10 > offsetX &&
+                star.position.y - 10 < offsetY &&
+                star.position.y + 10 > offsetY) {
                 let index: number = arrayStars.indexOf(star);
                 arrayStars.splice(index, 1);
                 starDragDrop = star;
@@ -309,18 +306,20 @@ namespace Galaxy {
     }
 
 
-    async function sendPicture(_event: Event): Promise<void> {
+    async function sendPicture(): Promise<void> {
         let name: string | null = prompt("Canvas Name");
         // console.log(name);
 
-        if (name == null) {
+        if (name == "") {
+            alert("please enter valid name");
             return;
         }
    
 
         let picture: any = {
             name: name,
-            // URLSearchParams erwartet eine key value pair mit jeweils strings somit muss dass particle array zu einem string konvertiert werden
+            // URLSearchParams erwartet eine key value pair mit jeweils strings
+            //--> arrays in strings umwandeln
             ship: JSON.stringify(arrayShips),
             star: JSON.stringify(arrayStars),
             asteroid: JSON.stringify(arrayAsteroids),
@@ -329,7 +328,7 @@ namespace Galaxy {
 
         let query: URLSearchParams = new URLSearchParams(<any>picture);
         await fetch(url + "/save?" + query.toString());
-
+        //json string wird zu einem query string umgewandelt
         alert("Saved");
     }
 
@@ -337,7 +336,8 @@ namespace Galaxy {
         selfDestroy();
         let name: string | null = prompt("Canvas Name");
 
-        if (name == null) {
+        if (name == "") {
+            alert("please enter valid name");
             return;
         }
 
@@ -355,12 +355,12 @@ namespace Galaxy {
 
         // let name = responseJson.name;
 
-        // rohe partikel in array form
+        // rohe objekte in array form
         let shipsRaw: any = JSON.parse(responseJson.ship);
         let starsRaw: any = JSON.parse(responseJson.star);
         let asteroidsRaw: any = JSON.parse(responseJson.asteroid);
         let planetsRaw: any = JSON.parse(responseJson.planet);
-        // resetCanvas();
+  
 
         for (let ship of shipsRaw) {
             // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
@@ -383,6 +383,5 @@ namespace Galaxy {
             arrayPlanets.push(newPlanet);
         }
     }
-
 
 }
