@@ -28,8 +28,7 @@
   "deprecated": false,
   "description": "Resolve the path of a module like require.resolve() but from a given path",
   "devDependencies": {
-    "ava": "*",
-    "xo": "*"
+    "start": "node/Endabgabe/server.js"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -51,10 +50,10 @@
   "name": "galaxy",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Galaxysimulator/Endabgabe/server.js"
+    "url": "git+https://github.com/smo-haenle/Galaxysimulator"
   },
   "scripts": {
-    "test": "node/Endabgabe/server.js"
+    "start": "node/Endabgabe/server.js"
   },
   "version": "2.0.0",
   "main": "index.js",
