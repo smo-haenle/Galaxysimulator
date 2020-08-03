@@ -28,7 +28,7 @@
   "deprecated": false,
   "description": "Resolve the path of a module like require.resolve() but from a given path",
   "devDependencies": {
-    "start": "node/Endabgabe/server.js"
+    "start": "node /Endabgabe/server.js"
   },
   "engines": {
     "node": ">=0.10.0"
