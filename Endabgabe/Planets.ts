@@ -27,7 +27,6 @@ namespace Galaxy {
         }
 
         draw(): void {
-            console.log("planet");
             let planet: Path2D = new Path2D();
             crc2.save();
             crc2.shadowColor = "black";

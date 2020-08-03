@@ -5,9 +5,6 @@ namespace Galaxy {
         y: number;
         position: Vector;
 
-
-
-
         constructor(_x: number, _y: number) {
             this.position = new Vector(_x, _y);
             

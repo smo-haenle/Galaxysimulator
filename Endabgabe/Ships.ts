@@ -10,7 +10,6 @@ namespace Galaxy {
 
         constructor(_x: number, _y: number) {
             this.position = new Vector(_x, _y);
-
             this.velocity = new Vector((Math.random() * -2), (Math.random() * -1)); // -0.5 - 0.5 || 2 - 3
         }
 

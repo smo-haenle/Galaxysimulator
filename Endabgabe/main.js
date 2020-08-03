@@ -249,7 +249,6 @@ var Galaxy;
         alert("Saved");
     }
     async function loadPicture() {
-        selfDestroy();
         let name = prompt("Canvas Name");
         if (name == "") {
             alert("please enter valid name");
@@ -263,11 +262,16 @@ var Galaxy;
         // das Response objekt gibt mit der json funktion den inhalt der antwort als json zurück
         let responseJson = await response.json();
         // let name = responseJson.name;
+        if (responseJson == null) {
+            alert("Name is not in Databank");
+            return;
+        }
         // rohe objekte in array form
         let shipsRaw = JSON.parse(responseJson.ship);
         let starsRaw = JSON.parse(responseJson.star);
         let asteroidsRaw = JSON.parse(responseJson.asteroid);
         let planetsRaw = JSON.parse(responseJson.planet);
+        selfDestroy();
         for (let ship of shipsRaw) {
             // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
             let newShip = new Galaxy.Ships(ship.position.x, ship.position.y);

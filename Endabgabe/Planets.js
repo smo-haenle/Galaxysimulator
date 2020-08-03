@@ -15,7 +15,6 @@ var Galaxy;
             }
         }
         draw() {
-            console.log("planet");
             let planet = new Path2D();
             Galaxy.crc2.save();
             Galaxy.crc2.shadowColor = "black";

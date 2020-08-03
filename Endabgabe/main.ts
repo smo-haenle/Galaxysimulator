@@ -333,7 +333,7 @@ namespace Galaxy {
     }
 
     async function loadPicture(): Promise<void> {
-        selfDestroy();
+       
         let name: string | null = prompt("Canvas Name");
 
         if (name == "") {
@@ -354,13 +354,17 @@ namespace Galaxy {
         let responseJson: any = await response.json();
 
         // let name = responseJson.name;
+        if (responseJson == null) {
+            alert("Name is not in Databank");
+            return;
+        }
 
         // rohe objekte in array form
         let shipsRaw: any = JSON.parse(responseJson.ship);
         let starsRaw: any = JSON.parse(responseJson.star);
         let asteroidsRaw: any = JSON.parse(responseJson.asteroid);
         let planetsRaw: any = JSON.parse(responseJson.planet);
-  
+        selfDestroy();
 
         for (let ship of shipsRaw) {
             // von den rohen partikel daten werden die Particle objekte erzeugt und dem canvas hinzugefügt
