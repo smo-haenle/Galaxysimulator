@@ -47,7 +47,7 @@
     "path"
   ],
   "license": "MIT",
-  "name": "galaxy",
+  "name": "galaxysimulator",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smo-haenle/Galaxysimulator"
