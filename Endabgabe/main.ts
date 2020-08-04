@@ -5,7 +5,7 @@ namespace Galaxy {
 
     export let crc2: CanvasRenderingContext2D;
     export let canvas: HTMLCanvasElement;
-    export let url: string = "https://galaxysimulator.herokuapp.com/";
+    export let url: string = "http://localhost:5001";
 
     export let arrayShips: Ships[] = [];
     export let arrayPlanets: Planets[] = [];
@@ -178,7 +178,7 @@ namespace Galaxy {
         planet.setColour();
         planet.draw();
         arrayPlanets.push(planet);
-        console.log(arrayPlanets);
+        //console.log(arrayPlanets);
 
     }
 
@@ -189,7 +189,7 @@ namespace Galaxy {
         let ship: Ships = new Ships(x, y);
         ship.draw();
         arrayShips.push(ship);
-        console.log(arrayShips);
+        //console.log(arrayShips);
 
     }
     function drawStar(_event: MouseEvent): void {
@@ -199,7 +199,7 @@ namespace Galaxy {
         let star: Stars = new Stars(x, y);
         star.draw();
         arrayStars.push(star);
-        console.log(arrayStars);
+        //console.log(arrayStars);
 
     }
 
@@ -210,7 +210,7 @@ namespace Galaxy {
         let asteroid: Asteroids = new Asteroids(x, y);
         asteroid.draw();
         arrayAsteroids.push(asteroid);
-        console.log(arrayAsteroids);
+        //console.log(arrayAsteroids);
 
     }
 

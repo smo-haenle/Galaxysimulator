@@ -2,7 +2,7 @@
 var Galaxy;
 (function (Galaxy) {
     window.addEventListener("load", handleLoad);
-    Galaxy.url = "https://galaxysimulator.herokuapp.com/";
+    Galaxy.url = "http://localhost:5001";
     Galaxy.arrayShips = [];
     Galaxy.arrayPlanets = [];
     Galaxy.arrayAsteroids = [];
